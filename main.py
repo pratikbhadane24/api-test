@@ -11,8 +11,8 @@ def read_root():
 
 @app.get("/test")
 async def ip_tester():
+    url = "https://api.ipify.org?format=json"
     async with aiohttp.ClientSession() as session:
-        async with session.get("https://signals.cirrus.trade/health") as resp:
-            status = resp.status
-            response = await resp.json()
-            return {"status": status, "response": response}
+        async with session.get(url, timeout=10) as resp:
+            data = await resp.json()
+            return {"egress_ip": data.get("ip"), "status": resp.status}
