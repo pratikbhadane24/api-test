@@ -16,12 +16,18 @@ certifi==2025.10.5
     # via requests
 charset-normalizer==3.4.3
     # via requests
+click==8.3.0
+    # via uvicorn
+colorama==0.4.6 ; sys_platform == 'win32'
+    # via click
 fastapi==0.118.0
     # via api-test
 frozenlist==1.8.0
     # via
     #   aiohttp
     #   aiosignal
+h11==0.16.0
+    # via uvicorn
 idna==3.10
     # via
     #   anyio
@@ -55,5 +61,7 @@ typing-inspection==0.4.2
     # via pydantic
 urllib3==2.5.0
     # via requests
+uvicorn==0.37.0
+    # via api-test
 yarl==1.22.0
     # via aiohttp
