@@ -1,6 +1,3 @@
-import time
-import threading
-import asyncio
 import aiohttp
 from fastapi import FastAPI
 
@@ -19,17 +16,3 @@ async def ip_tester():
             status = resp.status
             response = await resp.json()
             return {"status": status, "response": response}
-
-
-def repeat_ip_test():
-    while True:
-        try:
-            response = ip_tester()
-            print("Periodic Check:", response)
-        except Exception as e:
-            print("Error during IP test:", e)
-        time.sleep(30)
-
-
-# Start the loop in a separate thread
-threading.Thread(target=repeat_ip_test, daemon=True).start()
