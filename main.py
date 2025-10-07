@@ -1,9 +1,11 @@
 import time
 import threading
-import requests
+import asyncio
+import aiohttp
 from fastapi import FastAPI
 
 app = FastAPI()
+
 
 @app.get("/")
 def read_root():
@@ -11,10 +13,12 @@ def read_root():
 
 
 @app.get("/test")
-def ip_tester():
-    req = requests.get("https://signals.cirrus.trade/health")
-    print("REQUEST", req)
-    return {"status": req.status_code, "response": req.json()}
+async def ip_tester():
+    async with aiohttp.ClientSession() as session:
+        async with session.get("https://signals.cirrus.trade/health") as resp:
+            status = resp.status
+            response = await resp.json()
+            return {"status": status, "response": response}
 
 
 def repeat_ip_test():
@@ -25,6 +29,7 @@ def repeat_ip_test():
         except Exception as e:
             print("Error during IP test:", e)
         time.sleep(30)
+
 
 # Start the loop in a separate thread
 threading.Thread(target=repeat_ip_test, daemon=True).start()
